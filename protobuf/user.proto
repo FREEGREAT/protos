@@ -4,77 +4,72 @@ package user_service.service.v1;
 
 option go_package = "github.com/FREEGREAT/protos/gen/go/user_service/v1;proto_user_service";
 
-service UserService{
+service UserService {
     rpc GetUsers(GetUsersRequest) returns (GetUsersResponse){}
     rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse){}
     rpc RegisterUser(RegisterUserRequest) returns (RegisterUserResponse){}
     rpc LoginUser(LoginUserRequest) returns (LoginUserResponse){}
-    rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse){ }
+    rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse){}
 }
 
 message User {
-    string id =1;
-    string username =2;
-    string password_hash=3;
-    string email =4;
-    uint32 age =5;
-    string image_url=6;
+    string id = 1;
+    string username = 2;
+    string password_hash = 3;
+    string email = 4;
+    uint32 age = 5;
+    bytes image = 6;  
 }
 
-
-message GetUsersRequest{
-    optional string username =1;
-    optional string password_hash=2;
-    optional string email =3;
-    optional uint32 age =4;
-    optional string image_url=5;
-
+message GetUsersRequest {
+    optional string username = 1;
+    optional string password_hash = 2;
+    optional string email = 3;
+    optional uint32 age = 4;
+    optional bytes image = 5;  
 }
 
-message GetUsersResponse{
+message GetUsersResponse {
     repeated User users = 1;
 }
 
-message UpdateUserRequest{
-    optional string id =1;
-    optional string username=2;
-    optional string password_hash=3;
-    optional string email =4;
-    optional uint32 age =5;
-    optional string image_url=6;
-
+message UpdateUserRequest {
+    optional string id = 1;
+    optional string username = 2;
+    optional string password_hash = 3;
+    optional string email = 4;
+    optional uint32 age = 5;
+    optional bytes image = 6;  
 }
-// This is response for update user.
-message UpdateUserResponse{
+
+message UpdateUserResponse {
     User user = 1;
-    
 }
 
-message RegisterUserRequest{
+message RegisterUserRequest {
     string nickname = 1;
     string password = 2;
     string email = 3;
     int32 age = 4;
-    string imge_url =5;  
+    bytes image = 5;  
 }
 
-message RegisterUserResponse{
-    string user_id =1;
+message RegisterUserResponse {
+    string user_id = 1;
 }
 
-message LoginUserRequest{
+message LoginUserRequest {
     string email = 1;
-    string password =2;
+    string password = 2;
 }
 
-message LoginUserResponse{
+message LoginUserResponse {}
+
+message DeleteUserRequest {
+    uint64 id = 1;
 }
 
-message DeleteUserRequest{
-    uint64 id =1;
-}
-
-message DeleteUserResponse{
+message DeleteUserResponse {
     string status = 1;
-    uint64 id =2;
+    uint64 id = 2;
 }
