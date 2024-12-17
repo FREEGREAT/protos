@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package friend_service.service.v1;
+
+option go_package = "github.com/FREEGREAT/protos/gen/go/friends_service/v1;proto_friends_service";
+
+service UserService{
+    rpc AddFriends(AddFriendsRequest) returns (AddFriendsResponse){}
+    rpc DeleteFriend(DeleteFriendsRequest) returns (DeleteFriendsResponse) {}
+    rpc ListOfFriends(ListOfFriendsRequest) returns (ListOfFriendsResponse){}
+}
+
+message Friend {
+    string id =1;
+    string username =2;
+    string email =4;
+    uint32 age =5;
+    string image_url=6;
+}
+
+
+message AddFriendsRequest {
+    string user_id_1 = 1;
+    string user_id_2 = 2;
+}
+
+message AddFriendsResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+message DeleteFriendsRequest {
+    string user_id_1 = 1;
+    string user_id_2 = 2;
+}
+
+message DeleteFriendsResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+message ListOfFriendsRequest{
+    string user_id =1;
+}
+
+message ListOfFriendsResponse{
+   repeated Friend friend =1;
+}
