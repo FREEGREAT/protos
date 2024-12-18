@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.5.1
 // - protoc             v5.28.3
-// source: user.proto
+// source: user_service.proto
 
 package proto_user_service
 
@@ -19,11 +19,14 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	UserService_GetUsers_FullMethodName     = "/user_service.service.v1.UserService/GetUsers"
-	UserService_UpdateUser_FullMethodName   = "/user_service.service.v1.UserService/UpdateUser"
-	UserService_RegisterUser_FullMethodName = "/user_service.service.v1.UserService/RegisterUser"
-	UserService_LoginUser_FullMethodName    = "/user_service.service.v1.UserService/LoginUser"
-	UserService_DeleteUser_FullMethodName   = "/user_service.service.v1.UserService/DeleteUser"
+	UserService_GetUsers_FullMethodName      = "/gomessage.com.user_service.UserService/GetUsers"
+	UserService_UpdateUser_FullMethodName    = "/gomessage.com.user_service.UserService/UpdateUser"
+	UserService_RegisterUser_FullMethodName  = "/gomessage.com.user_service.UserService/RegisterUser"
+	UserService_LoginUser_FullMethodName     = "/gomessage.com.user_service.UserService/LoginUser"
+	UserService_DeleteUser_FullMethodName    = "/gomessage.com.user_service.UserService/DeleteUser"
+	UserService_AddFriends_FullMethodName    = "/gomessage.com.user_service.UserService/AddFriends"
+	UserService_DeleteFriend_FullMethodName  = "/gomessage.com.user_service.UserService/DeleteFriend"
+	UserService_ListOfFriends_FullMethodName = "/gomessage.com.user_service.UserService/ListOfFriends"
 )
 
 // UserServiceClient is the client API for UserService service.
@@ -35,6 +38,9 @@ type UserServiceClient interface {
 	RegisterUser(ctx context.Context, in *RegisterUserRequest, opts ...grpc.CallOption) (*RegisterUserResponse, error)
 	LoginUser(ctx context.Context, in *LoginUserRequest, opts ...grpc.CallOption) (*LoginUserResponse, error)
 	DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*DeleteUserResponse, error)
+	AddFriends(ctx context.Context, in *AddFriendsRequest, opts ...grpc.CallOption) (*AddFriendsResponse, error)
+	DeleteFriend(ctx context.Context, in *DeleteFriendsRequest, opts ...grpc.CallOption) (*DeleteFriendsResponse, error)
+	ListOfFriends(ctx context.Context, in *ListOfFriendsRequest, opts ...grpc.CallOption) (*ListOfFriendsResponse, error)
 }
 
 type userServiceClient struct {
@@ -95,6 +101,36 @@ func (c *userServiceClient) DeleteUser(ctx context.Context, in *DeleteUserReques
 	return out, nil
 }
 
+func (c *userServiceClient) AddFriends(ctx context.Context, in *AddFriendsRequest, opts ...grpc.CallOption) (*AddFriendsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AddFriendsResponse)
+	err := c.cc.Invoke(ctx, UserService_AddFriends_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) DeleteFriend(ctx context.Context, in *DeleteFriendsRequest, opts ...grpc.CallOption) (*DeleteFriendsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DeleteFriendsResponse)
+	err := c.cc.Invoke(ctx, UserService_DeleteFriend_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) ListOfFriends(ctx context.Context, in *ListOfFriendsRequest, opts ...grpc.CallOption) (*ListOfFriendsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListOfFriendsResponse)
+	err := c.cc.Invoke(ctx, UserService_ListOfFriends_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServiceServer is the server API for UserService service.
 // All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility.
@@ -104,6 +140,9 @@ type UserServiceServer interface {
 	RegisterUser(context.Context, *RegisterUserRequest) (*RegisterUserResponse, error)
 	LoginUser(context.Context, *LoginUserRequest) (*LoginUserResponse, error)
 	DeleteUser(context.Context, *DeleteUserRequest) (*DeleteUserResponse, error)
+	AddFriends(context.Context, *AddFriendsRequest) (*AddFriendsResponse, error)
+	DeleteFriend(context.Context, *DeleteFriendsRequest) (*DeleteFriendsResponse, error)
+	ListOfFriends(context.Context, *ListOfFriendsRequest) (*ListOfFriendsResponse, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -128,6 +167,15 @@ func (UnimplementedUserServiceServer) LoginUser(context.Context, *LoginUserReque
 }
 func (UnimplementedUserServiceServer) DeleteUser(context.Context, *DeleteUserRequest) (*DeleteUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteUser not implemented")
+}
+func (UnimplementedUserServiceServer) AddFriends(context.Context, *AddFriendsRequest) (*AddFriendsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddFriends not implemented")
+}
+func (UnimplementedUserServiceServer) DeleteFriend(context.Context, *DeleteFriendsRequest) (*DeleteFriendsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteFriend not implemented")
+}
+func (UnimplementedUserServiceServer) ListOfFriends(context.Context, *ListOfFriendsRequest) (*ListOfFriendsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListOfFriends not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
 func (UnimplementedUserServiceServer) testEmbeddedByValue()                     {}
@@ -240,11 +288,65 @@ func _UserService_DeleteUser_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserService_AddFriends_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddFriendsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).AddFriends(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserService_AddFriends_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).AddFriends(ctx, req.(*AddFriendsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_DeleteFriend_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteFriendsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).DeleteFriend(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserService_DeleteFriend_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).DeleteFriend(ctx, req.(*DeleteFriendsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_ListOfFriends_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListOfFriendsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).ListOfFriends(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserService_ListOfFriends_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).ListOfFriends(ctx, req.(*ListOfFriendsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserService_ServiceDesc is the grpc.ServiceDesc for UserService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var UserService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "user_service.service.v1.UserService",
+	ServiceName: "gomessage.com.user_service.UserService",
 	HandlerType: (*UserServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -267,7 +369,19 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "DeleteUser",
 			Handler:    _UserService_DeleteUser_Handler,
 		},
+		{
+			MethodName: "AddFriends",
+			Handler:    _UserService_AddFriends_Handler,
+		},
+		{
+			MethodName: "DeleteFriend",
+			Handler:    _UserService_DeleteFriend_Handler,
+		},
+		{
+			MethodName: "ListOfFriends",
+			Handler:    _UserService_ListOfFriends_Handler,
+		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "user.proto",
+	Metadata: "user_service.proto",
 }

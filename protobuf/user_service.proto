@@ -1,16 +1,8 @@
 syntax = "proto3";
 
-package user_service.service.v1;
+package gomessage.com.user_service;
 
 option go_package = "github.com/FREEGREAT/protos/gen/go/user_service/v1;proto_user_service";
-
-service UserService {
-    rpc GetUsers(GetUsersRequest) returns (GetUsersResponse){}
-    rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse){}
-    rpc RegisterUser(RegisterUserRequest) returns (RegisterUserResponse){}
-    rpc LoginUser(LoginUserRequest) returns (LoginUserResponse){}
-    rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse){}
-}
 
 message User {
     string id = 1;
@@ -20,6 +12,24 @@ message User {
     uint32 age = 5;
     bytes image = 6;  
 }
+
+message Friend {
+    string user_id =1;
+    string firend_id =2;
+}
+
+
+service UserService {
+    rpc GetUsers(GetUsersRequest) returns (GetUsersResponse){}
+    rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse){}
+    rpc RegisterUser(RegisterUserRequest) returns (RegisterUserResponse){}
+    rpc LoginUser(LoginUserRequest) returns (LoginUserResponse){}
+    rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse){}
+    rpc AddFriends(AddFriendsRequest) returns (AddFriendsResponse){}
+    rpc DeleteFriend(DeleteFriendsRequest) returns (DeleteFriendsResponse) {}
+    rpc ListOfFriends(ListOfFriendsRequest) returns (ListOfFriendsResponse){}
+}
+
 
 message GetUsersRequest {
     optional string username = 1;
@@ -72,4 +82,33 @@ message DeleteUserRequest {
 message DeleteUserResponse {
     string status = 1;
     uint64 id = 2;
+}
+
+
+message AddFriendsRequest {
+    string user_id_1 = 1;
+    string user_id_2 = 2;
+}
+
+message AddFriendsResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+message DeleteFriendsRequest {
+    string user_id_1 = 1;
+    string user_id_2 = 2;
+}
+
+message DeleteFriendsResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+message ListOfFriendsRequest{
+    string user_id =1;
+}
+
+message ListOfFriendsResponse{
+   repeated Friend friend =1;
 }

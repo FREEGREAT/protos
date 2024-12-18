@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package  gomessage.com.media_service;
+
+option go_package = "github.com/FREEGREAT/protos/gen/go/media_service/v1;proto_media_service";
+
+service MediaService {
+    rpc SavePhoto(SavePhotoRequest) returns (SavePhotoResponse);
+}
+
+message SavePhotoRequest {
+    bytes photo = 1; 
+}
+
+message SavePhotoResponse {
+    string photoLink = 1; 
+}
