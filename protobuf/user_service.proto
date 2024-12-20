@@ -83,12 +83,13 @@ message LoginUserResponse {
 }
 
 message DeleteUserRequest {
-    uint64 id = 1;
+    string id = 1;
 }
 
 message DeleteUserResponse {
     string status = 1;
-    uint64 id = 2;
+    string id = 2;
+    string nickname =3;;
 }
 
 
