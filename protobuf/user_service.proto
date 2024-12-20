@@ -40,7 +40,8 @@ message GetUsersRequest {
 }
 
 message GetUsersResponse {
-    repeated User users = 1;
+    string status =1;
+    repeated User users = 2;
 }
 
 message UpdateUserRequest {
@@ -54,6 +55,7 @@ message UpdateUserRequest {
 
 message UpdateUserResponse {
     User user = 1;
+    string status =2;
 }
 
 message RegisterUserRequest {
@@ -66,6 +68,7 @@ message RegisterUserRequest {
 
 message RegisterUserResponse {
     string user_id = 1;
+    string status =2;
 }
 
 message LoginUserRequest {
@@ -73,7 +76,11 @@ message LoginUserRequest {
     string password = 2;
 }
 
-message LoginUserResponse {}
+message LoginUserResponse {
+    string status =1;
+    string access = 2;
+    string refresh =3;
+}
 
 message DeleteUserRequest {
     uint64 id = 1;

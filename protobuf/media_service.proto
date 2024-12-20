@@ -6,6 +6,7 @@ option go_package = "github.com/FREEGREAT/protos/gen/go/media_service/v1;proto_m
 
 service MediaService {
     rpc SavePhoto(SavePhotoRequest) returns (SavePhotoResponse);
+    rpc DownloadPhoto(DownloadPhotoRequest) returns (DownloadPhotoResponse);
 }
 
 message SavePhotoRequest {
@@ -14,4 +15,13 @@ message SavePhotoRequest {
 
 message SavePhotoResponse {
     string photoLink = 1; 
+}
+
+message DownloadPhotoRequest {
+    string photoLink = 1; 
+}
+
+message DownloadPhotoResponse {
+    string stastus = 1;
+    bytes photoLink = 2; 
 }

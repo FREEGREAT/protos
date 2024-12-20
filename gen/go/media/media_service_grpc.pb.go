@@ -19,7 +19,8 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	MediaService_SavePhoto_FullMethodName = "/gomessage.com.media_service.MediaService/SavePhoto"
+	MediaService_SavePhoto_FullMethodName     = "/gomessage.com.media_service.MediaService/SavePhoto"
+	MediaService_DownloadPhoto_FullMethodName = "/gomessage.com.media_service.MediaService/DownloadPhoto"
 )
 
 // MediaServiceClient is the client API for MediaService service.
@@ -27,6 +28,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type MediaServiceClient interface {
 	SavePhoto(ctx context.Context, in *SavePhotoRequest, opts ...grpc.CallOption) (*SavePhotoResponse, error)
+	DownloadPhoto(ctx context.Context, in *DownloadPhotoRequest, opts ...grpc.CallOption) (*DownloadPhotoResponse, error)
 }
 
 type mediaServiceClient struct {
@@ -47,11 +49,22 @@ func (c *mediaServiceClient) SavePhoto(ctx context.Context, in *SavePhotoRequest
 	return out, nil
 }
 
+func (c *mediaServiceClient) DownloadPhoto(ctx context.Context, in *DownloadPhotoRequest, opts ...grpc.CallOption) (*DownloadPhotoResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DownloadPhotoResponse)
+	err := c.cc.Invoke(ctx, MediaService_DownloadPhoto_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MediaServiceServer is the server API for MediaService service.
 // All implementations must embed UnimplementedMediaServiceServer
 // for forward compatibility.
 type MediaServiceServer interface {
 	SavePhoto(context.Context, *SavePhotoRequest) (*SavePhotoResponse, error)
+	DownloadPhoto(context.Context, *DownloadPhotoRequest) (*DownloadPhotoResponse, error)
 	mustEmbedUnimplementedMediaServiceServer()
 }
 
@@ -64,6 +77,9 @@ type UnimplementedMediaServiceServer struct{}
 
 func (UnimplementedMediaServiceServer) SavePhoto(context.Context, *SavePhotoRequest) (*SavePhotoResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SavePhoto not implemented")
+}
+func (UnimplementedMediaServiceServer) DownloadPhoto(context.Context, *DownloadPhotoRequest) (*DownloadPhotoResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DownloadPhoto not implemented")
 }
 func (UnimplementedMediaServiceServer) mustEmbedUnimplementedMediaServiceServer() {}
 func (UnimplementedMediaServiceServer) testEmbeddedByValue()                      {}
@@ -104,6 +120,24 @@ func _MediaService_SavePhoto_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _MediaService_DownloadPhoto_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DownloadPhotoRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MediaServiceServer).DownloadPhoto(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MediaService_DownloadPhoto_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MediaServiceServer).DownloadPhoto(ctx, req.(*DownloadPhotoRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // MediaService_ServiceDesc is the grpc.ServiceDesc for MediaService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -114,6 +148,10 @@ var MediaService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SavePhoto",
 			Handler:    _MediaService_SavePhoto_Handler,
+		},
+		{
+			MethodName: "DownloadPhoto",
+			Handler:    _MediaService_DownloadPhoto_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
