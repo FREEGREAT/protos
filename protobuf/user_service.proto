@@ -64,6 +64,8 @@ message RegisterUserRequest {
     string email = 3;
     int32 age = 4;
     string image_url = 6; 
+    string location =7;
+    string device = 8;
 }
 
 message RegisterUserResponse {
