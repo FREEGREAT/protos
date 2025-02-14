@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package gomessage.com.geoip_service;
+
+option go_package = "github.com/FREEGREAT/protos/gen/go/geoip_service/v1;proto_geoip_service";
+
+service GeoIpService {
+    rpc GetLocationByIP(GetLocationRequest) returns (GetLocationResponse){}
+}
+
+message GetLocationRequest{
+    string ip = 1;
+}
+
+message GetLocationResponse{
+    string location = 1;
+}
+
